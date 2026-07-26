@@ -1,0 +1,222 @@
+<%#
+  =============================================================================
+  VIEW: Planning Board (index)
+  -----------------------------------------------------------------------------
+  Esta é a "cara" do app — HTML + ERB (Embedded Ruby).
+  Tudo entre <%= %> é Ruby que vira texto no HTML.
+  Tudo entre <% %> é Ruby que NÃO imprime (loops, ifs, etc.).
+
+  Os dados (@primary_targets, @secondary_targets...) vêm do controller.
+  =============================================================================
+%>
+
+<% content_for :title, "Kortz Center — Planning Board" %>
+
+<section class="planning-board" aria-label="Quadro de planejamento do Kortz Center Heist">
+  <%# Barbante decorativo — só estética, como no board do jogo %>
+  <div class="board-string" style="top: 22%; left: 18%; width: 38%; transform: rotate(8deg);"></div>
+  <div class="board-string" style="top: 48%; left: 42%; width: 28%; transform: rotate(-12deg);"></div>
+
+  <header class="board-header">
+    <p class="board-header__sub">Art Studio · Los Santos</p>
+    <h1 class="board-header__brand">KORTZ CENTER</h1>
+    <p class="board-header__sub">Heist Planning Board</p>
+    <span class="board-header__stamp">Classified · Crew Only</span>
+  </header>
+
+  <div class="board-grid">
+    <%# ===================== COLUNA ESQUERDA ===================== %>
+    <div class="stack">
+      <%# --- MAIN TARGET (polaroid) --- %>
+      <% main = @primary_targets.first %>
+      <article class="paper-card polaroid" style="transform: rotate(<%= pin_tilt(0) %>); animation-delay: 0.05s;">
+        <span class="paper-card__pin paper-card__pin--gold" aria-hidden="true"></span>
+        <h2>Primary Target</h2>
+
+        <div class="polaroid__frame">
+          <span class="polaroid__glyph">ART</span>
+        </div>
+
+        <% if main %>
+          <p class="polaroid__caption"><%= main.name %></p>
+          <p class="polaroid__price"><%= gta_money(main.first_weekly_payout) %></p>
+          <p style="font-size: 0.75rem; color: var(--ink-faded); margin: 0.35rem 0 0;">
+            1ª venda da semana · reset <%= @economy[:weekly_reset] %>
+          </p>
+
+          <div style="margin-top: 0.85rem; text-align: left;">
+            <div class="price-row">
+              <span class="price-row__label">First weekly</span>
+              <span class="price-row__value"><%= gta_money(main.first_weekly_payout) %></span>
+            </div>
+            <div class="price-row">
+              <span class="price-row__label">Repeat (buyer fatigue)</span>
+              <span class="price-row__value price-row__value--muted"><%= gta_money(main.repeat_payout) %></span>
+            </div>
+            <div class="price-row">
+              <span class="price-row__label">Diferença semanal</span>
+              <span class="price-row__value"><%= gta_money(main.weekly_bonus_difference) %></span>
+            </div>
+          </div>
+
+          <% if main.notes.present? %>
+            <p style="margin-top: 0.75rem; font-size: 0.78rem; text-align: left;">
+              <%= main.notes %>
+            </p>
+          <% end %>
+        <% else %>
+          <p class="polaroid__caption">Sem dados — rode <code>bin/rails db:seed</code></p>
+        <% end %>
+      </article>
+
+      <%# --- OUTRAS PRIMARY ROTATIVAS --- %>
+      <% if @primary_targets.size > 1 %>
+        <article class="paper-card" style="transform: rotate(<%= pin_tilt(1) %>); animation-delay: 0.12s;">
+          <span class="paper-card__pin" aria-hidden="true"></span>
+          <h3>Rotating Primaries</h3>
+          <p style="margin-top: 0;">Pinturas que entram após a história / por semana.</p>
+          <ul class="loot-list" style="max-height: none;">
+            <% @primary_targets.drop(1).each do |target| %>
+              <li>
+                <span class="loot-list__name"><%= target.name %></span>
+                <span class="loot-list__price">
+                  <% if target.first_weekly_payout %>
+                    <%= gta_money_short(target.first_weekly_payout) %>
+                  <% else %>
+                    ?
+                  <% end %>
+                  /
+                  <%= gta_money_short(target.repeat_payout) %>
+                </span>
+                <span class="loot-list__meta">
+                  1ª semana / repeat · <%= target.location %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </article>
+      <% end %>
+
+      <%# --- SECONDARY LOOT --- %>
+      <article class="paper-card" style="transform: rotate(<%= pin_tilt(2) %>); animation-delay: 0.18s;">
+        <span class="paper-card__pin" aria-hidden="true"></span>
+        <h3>Secondary Targets</h3>
+        <p style="margin: 0 0 0.5rem;">
+          Pool no prédio ~<%= gta_money_short(2_300_000) %>–<%= gta_money_short(2_677_500) %>.
+          Solo só carrega parte (bolsa limitada — pinturas grandes ~50%).
+        </p>
+
+        <ul class="loot-list">
+          <% @secondary_targets.each do |loot| %>
+            <li>
+              <span class="loot-list__name"><%= loot.name %></span>
+              <span class="loot-list__price"><%= gta_money(loot.first_weekly_payout) %></span>
+              <span class="loot-list__meta">
+                <%= loot.location %>
+                <% if loot.bag_weight.to_i > 0 %>
+                  · bolsa ~<%= loot.bag_weight %>%
+                <% end %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      </article>
+    </div>
+
+    <%# ===================== COLUNA DIREITA ===================== %>
+    <div class="stack">
+      <%# --- POST-IT DE ECONOMIA --- %>
+      <aside class="postit" style="animation-delay: 0.1s;">
+        <h3>Money Notes</h3>
+        <ul style="margin: 0; padding-left: 1.1rem;">
+          <li>
+            Solo 1ª run:
+            <strong><%= gta_money_short(@economy[:solo_first_min]) %>–<%= gta_money_short(@economy[:solo_first_max]) %></strong>
+          </li>
+          <li>
+            Crew 4 (máx. reportado):
+            <strong><%= gta_money(@economy[:crew_max_reported]) %></strong>
+          </li>
+          <li>
+            Setup fee: grátis 1ª /
+            <strong><%= gta_money(@economy[:setup_fee_repeat]) %></strong> repeat
+          </li>
+          <li>
+            Buyer’s Request: <%= gta_money_short(@economy[:buyer_request_normal]) %> Normal /
+            <%= gta_money_short(@economy[:buyer_request_hard]) %> Hard
+          </li>
+          <li>
+            Elite Challenge: <%= gta_money_short(@economy[:elite_challenge_normal]) %> /
+            <%= gta_money_short(@economy[:elite_challenge_hard]) %> Hard
+          </li>
+          <li>Reset semanal: <strong><%= @economy[:weekly_reset] %></strong></li>
+        </ul>
+        <p style="margin: 0.75rem 0 0; font-size: 0.78rem;">
+          Conselho da crew: faça <strong>uma run limpa por semana</strong>.
+          Repeat com fee de $100k quase não vale o tempo.
+        </p>
+      </aside>
+
+      <%# --- ENTRY POINTS --- %>
+      <article class="paper-card" style="transform: rotate(<%= pin_tilt(3) %>); animation-delay: 0.2s;">
+        <span class="paper-card__pin" aria-hidden="true"></span>
+        <h3>Entry Points</h3>
+        <p style="margin-top: 0;">Fotografar no Scope Out. Infiltration Gear = porta da finale.</p>
+        <div class="entry-grid">
+          <% @entry_points.each do |entry| %>
+            <div class="entry-chip">
+              <strong><%= entry.name %></strong>
+              <%= entry.gear_option %><br>
+              <span style="opacity: 0.8;"><%= entry.description %></span>
+            </div>
+          <% end %>
+        </div>
+      </article>
+
+      <%# --- PREPS OBRIGATÓRIAS --- %>
+      <article class="paper-card" style="transform: rotate(<%= pin_tilt(4) %>); animation-delay: 0.26s;">
+        <span class="paper-card__pin" aria-hidden="true"></span>
+        <h3>Mandatory Preps</h3>
+        <ul class="prep-list">
+          <% @mandatory_preps.each do |prep| %>
+            <li>
+              <span class="prep-check" aria-hidden="true"></span>
+              <div>
+                <span class="prep-list__title"><%= prep.name %></span>
+                <span class="prep-list__hint">
+                  <%= prep.category_label %> — <%= prep.description %>
+                </span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </article>
+
+      <%# --- PREPS OPCIONAIS --- %>
+      <article class="paper-card" style="transform: rotate(<%= pin_tilt(5) %>); animation-delay: 0.32s;">
+        <span class="paper-card__pin" aria-hidden="true"></span>
+        <h3>Optional Preps</h3>
+        <p style="margin-top: 0;">Desbloqueadas no Scope Out (foto / CCTV).</p>
+        <ul class="prep-list">
+          <% @optional_preps.each do |prep| %>
+            <li>
+              <span class="prep-check prep-check--optional" aria-hidden="true"></span>
+              <div>
+                <span class="prep-list__title"><%= prep.name %></span>
+                <span class="prep-list__hint">
+                  <%= prep.description %><br>
+                  Unlock: <%= prep.unlock_hint %>
+                </span>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </article>
+    </div>
+  </div>
+
+  <footer class="board-footer">
+    Projeto de estudo Rails · guia pra amigos da crew ·
+    valores da comunidade (jul/2026) — confirme in-game após patches
+  </footer>
+</section>

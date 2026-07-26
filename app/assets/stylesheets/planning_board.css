@@ -1,0 +1,477 @@
+/*
+ * =============================================================================
+ * Planning Board — visual inspirado no quadro do Art Studio (GTA Online)
+ * -----------------------------------------------------------------------------
+ * Cork / madeira escura, polaroids, post-its, pins vermelhos e tipografia
+ * "tipo máquina de escrever" pra lembrar o board tático do heist.
+ *
+ * Fontes carregadas no layout (Google Fonts):
+ *   - Bebas Neue  → títulos grandes estilo placa
+ *   - Special Elite → notas / machine gun typewriter
+ *   - IBM Plex Mono → números de dinheiro
+ * =============================================================================
+ */
+
+:root {
+  --cork-dark: #2a2118;
+  --cork-mid: #3d2f22;
+  --cork-light: #5a4330;
+  --paper: #e8dcc8;
+  --paper-aged: #d4c4a8;
+  --ink: #1a1410;
+  --ink-faded: #4a3f35;
+  --pin-red: #c0392b;
+  --pin-gold: #c9a227;
+  --money-green: #1e6b3a;
+  --tape: rgba(255, 240, 200, 0.45);
+  --string: rgba(180, 40, 30, 0.55);
+  --shadow-deep: rgba(0, 0, 0, 0.55);
+}
+
+/* Reset leve do body — o layout já não usa o container padrão do scaffold */
+body.board-page {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(90, 67, 48, 0.5), transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(30, 20, 12, 0.8), transparent 45%),
+    linear-gradient(160deg, #1c140e 0%, #2f2419 40%, #1a120c 100%);
+  font-family: "Special Elite", "Courier New", monospace;
+}
+
+/* Tábua / cork principal */
+.planning-board {
+  position: relative;
+  max-width: 1200px;
+  margin: 1.5rem auto 3rem;
+  padding: 1.75rem 1.5rem 2.5rem;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 220, 180, 0.03) 0,
+      rgba(255, 220, 180, 0.03) 1px,
+      transparent 1px,
+      transparent 12px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.06) 0,
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    linear-gradient(145deg, var(--cork-mid), var(--cork-dark) 55%, #221810);
+  border: 10px solid #1a120c;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.35),
+    0 25px 60px var(--shadow-deep);
+  overflow: hidden;
+}
+
+/* Moldura interna sutil */
+.planning-board::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(232, 220, 200, 0.12);
+  pointer-events: none;
+}
+
+/* Título estilo placa do heist */
+.board-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 1.75rem;
+  z-index: 1;
+}
+
+.board-header__brand {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  text-shadow: 0 3px 0 #000, 0 8px 24px rgba(0, 0, 0, 0.6);
+  line-height: 0.95;
+  margin: 0;
+  animation: boardReveal 0.7s ease-out both;
+}
+
+.board-header__sub {
+  margin: 0.5rem 0 0;
+  color: var(--paper-aged);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  animation: boardReveal 0.7s ease-out 0.12s both;
+}
+
+.board-header__stamp {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border: 2px solid var(--pin-red);
+  color: var(--pin-red);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  transform: rotate(-2deg);
+  animation: stampIn 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s both;
+}
+
+/* Grid do quadro */
+.board-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 860px) {
+  .board-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planning-board {
+    margin: 0.75rem;
+    padding: 1.1rem;
+    border-width: 6px;
+  }
+}
+
+/* Cartões de papel / polaroid */
+.paper-card {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-aged) 100%);
+  color: var(--ink);
+  padding: 1rem 1.1rem 1.15rem;
+  box-shadow: 3px 5px 14px rgba(0, 0, 0, 0.45);
+  position: relative;
+  animation: floatIn 0.55s ease-out both;
+}
+
+.paper-card--tilt {
+  /* tilt via style inline (helper pin_tilt) */
+}
+
+.paper-card__pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f07167, var(--pin-red));
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.paper-card__pin--gold {
+  background: radial-gradient(circle at 35% 30%, #f0d77a, var(--pin-gold));
+}
+
+.paper-card h2,
+.paper-card h3 {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.6rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.paper-card h2 {
+  font-size: 1.55rem;
+}
+
+.paper-card h3 {
+  font-size: 1.2rem;
+}
+
+.paper-card p,
+.paper-card li {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--ink-faded);
+}
+
+/* Polaroid do main target */
+.polaroid {
+  background: #f4efe6;
+  padding: 0.7rem 0.7rem 1.4rem;
+  box-shadow: 4px 8px 18px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: relative;
+}
+
+.polaroid__frame {
+  aspect-ratio: 4 / 3;
+  background:
+    linear-gradient(135deg, #2c1810 0%, #5a3a28 40%, #1a100c 100%);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.polaroid__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 60%
+  );
+  animation: shine 4s ease-in-out infinite;
+}
+
+.polaroid__glyph {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 3rem;
+  color: rgba(232, 220, 200, 0.85);
+  letter-spacing: 0.05em;
+  z-index: 1;
+}
+
+.polaroid__caption {
+  margin-top: 0.65rem;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.polaroid__price {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  color: var(--money-green);
+  font-size: 1.05rem;
+  margin-top: 0.2rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed rgba(74, 63, 53, 0.35);
+  font-size: 0.85rem;
+}
+
+.price-row:last-child {
+  border-bottom: 0;
+}
+
+.price-row__label {
+  color: var(--ink-faded);
+}
+
+.price-row__value {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  color: var(--money-green);
+}
+
+.price-row__value--muted {
+  color: #8a4b2a;
+}
+
+/* Lista de secondary como fichas grampeadas */
+.loot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.loot-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(74, 63, 53, 0.2);
+}
+
+.loot-list__name {
+  color: var(--ink);
+  font-size: 0.82rem;
+}
+
+.loot-list__meta {
+  grid-column: 1 / -1;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+}
+
+.loot-list__price {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--money-green);
+  white-space: nowrap;
+}
+
+/* Post-it de economia */
+.postit {
+  background: linear-gradient(160deg, #f3e07a, #e6c84a);
+  padding: 1rem;
+  box-shadow: 3px 6px 14px rgba(0, 0, 0, 0.4);
+  transform: rotate(1.5deg);
+}
+
+.postit h3 {
+  color: #3a2e10;
+}
+
+.postit p,
+.postit li {
+  color: #4a3a14;
+}
+
+/* Checklist de preps */
+.prep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prep-list li {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  padding: 0.45rem 0;
+  border-bottom: 1px dotted rgba(74, 63, 53, 0.3);
+}
+
+.prep-check {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+  border: 2px solid var(--ink);
+  background: transparent;
+}
+
+.prep-check--optional {
+  border-style: dashed;
+  border-color: #7a6550;
+}
+
+.prep-list__title {
+  color: var(--ink);
+  font-size: 0.88rem;
+}
+
+.prep-list__hint {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+  margin-top: 0.15rem;
+}
+
+/* Entradas como mini-map pins */
+.entry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.entry-chip {
+  background: rgba(26, 20, 16, 0.08);
+  border: 1px solid rgba(74, 63, 53, 0.35);
+  padding: 0.55rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+.entry-chip strong {
+  display: block;
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.04em;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 0.15rem;
+}
+
+/* Linha vermelha decorativa (barbante do board) */
+.board-string {
+  position: absolute;
+  height: 2px;
+  background: var(--string);
+  transform-origin: left center;
+  pointer-events: none;
+  opacity: 0.65;
+  z-index: 0;
+}
+
+.board-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: rgba(232, 220, 200, 0.55);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+.board-footer a {
+  color: rgba(232, 220, 200, 0.8);
+}
+
+/* Stack lateral */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Animações — presença, não barulho */
+@keyframes boardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stampIn {
+  from {
+    opacity: 0;
+    transform: scale(1.4) rotate(-8deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(-2deg);
+  }
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shine {
+  0%,
+  100% {
+    transform: translateX(-120%);
+  }
+  50% {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

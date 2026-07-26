@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <%#
+      Layout raiz — envolve TODAS as páginas.
+      Aqui entram CSS, JS, fontes e a tag <main> com o yield (conteúdo da action).
+    %>
+    <title><%= content_for(:title) || "Kortz Center Heist" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Planning board do Kortz Center Heist — projeto Rails pra aprender e ajudar a crew.">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%# Fontes expressivas — evita Inter/Roboto/Arial (cara de "AI default") %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;600&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <%#
+      Propshaft serve cada CSS da pasta assets.
+      - tailwind.css  → build do Tailwind (utility classes, se usarmos)
+      - application.css → reset/base
+      - planning_board.css → visual do quadro de planejamento
+    %>
+    <%= stylesheet_link_tag "tailwind", "application", "planning_board", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="board-page">
+    <%# Sem container genérico — o board ocupa a viewport como uma composição %>
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>
