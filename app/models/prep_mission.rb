@@ -37,15 +37,15 @@ class PrepMission < ApplicationRecord
   scope :ordered,   -> { order(:position, :name) }
   scope :by_category, ->(cat) { where(category: cat).order(:position) }
 
-  # Rótulo amigável em português para a UI
+  # Friendly label for the UI
   def category_label
     {
-      "scope"         => "Reconhecimento",
-      "equipment"     => "Equipamento",
-      "infiltration"  => "Infiltração",
-      "weapons"       => "Armas",
-      "getaway"       => "Fuga",
-      "optional"      => "Opcional"
+      "scope"         => "Scope",
+      "equipment"     => "Equipment",
+      "infiltration"  => "Infiltration",
+      "weapons"       => "Weapons",
+      "getaway"       => "Getaway",
+      "optional"      => "Optional"
     }.fetch(category, category.to_s.titleize)
   end
 

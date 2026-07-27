@@ -1,15 +1,11 @@
 <%#
   VIEW: Planning Board (index)
-  HTML + ERB. Tags com = imprimem; tags sem = só executam (loops/ifs).
-  Cuidado: dentro de comentario ERB NAO pode aparecer a sequencia que fecha a tag,
-  senao o comentario "vaza" pro HTML do browser.
-  Dados (@primary_targets, etc.) vem do controller.
+  Keep ERB comments free of the closing tag sequence or they leak into HTML.
 %>
 
 <% content_for :title, "Kortz Center — Planning Board" %>
 
-<section class="planning-board" aria-label="Quadro de planejamento do Kortz Center Heist">
-  <%# Barbante decorativo — só estética, como no board do jogo %>
+<section class="planning-board" aria-label="Kortz Center Heist planning board">
   <div class="board-string" style="top: 22%; left: 18%; width: 38%; transform: rotate(8deg);"></div>
   <div class="board-string" style="top: 48%; left: 42%; width: 28%; transform: rotate(-12deg);"></div>
 
@@ -21,35 +17,28 @@
   </header>
 
   <div class="board-grid">
-    <%# ===================== COLUNA ESQUERDA ===================== %>
     <div class="stack">
-      <%#
-        --- PRIMARY TARGET CAROUSEL ---
-        Um polaroid com setas: troca imagem + nome + preços do alvo.
-        Stimulus controller: carousel_controller.js
-      %>
       <article
         class="paper-card polaroid"
         style="transform: rotate(<%= pin_tilt(0) %>); animation-delay: 0.05s;"
         data-controller="carousel"
         aria-roledescription="carousel"
-        aria-label="Alvos primários do heist"
+        aria-label="Primary heist targets"
       >
         <span class="paper-card__pin paper-card__pin--gold" aria-hidden="true"></span>
         <h2>Primary Target</h2>
 
         <% if @primary_targets.any? %>
-          <%# Toggles globais do carrossel: Easy/Hard, First/Repeat, Alarm %>
           <div class="payout-toggles">
-            <div class="payout-toggles__group" role="group" aria-label="Dificuldade">
+            <div class="payout-toggles__group" role="group" aria-label="Difficulty">
               <button type="button" class="payout-toggle is-active" data-toggle-group="difficulty" data-difficulty="easy" data-action="carousel#setDifficulty">Easy</button>
               <button type="button" class="payout-toggle" data-toggle-group="difficulty" data-difficulty="hard" data-action="carousel#setDifficulty">Hard</button>
             </div>
-            <div class="payout-toggles__group" role="group" aria-label="Tipo de run">
-              <button type="button" class="payout-toggle is-active" data-toggle-group="run" data-run="first" data-action="carousel#setRun">1ª semana</button>
+            <div class="payout-toggles__group" role="group" aria-label="Run type">
+              <button type="button" class="payout-toggle is-active" data-toggle-group="run" data-run="first" data-action="carousel#setRun">1st weekly</button>
               <button type="button" class="payout-toggle" data-toggle-group="run" data-run="repeat" data-action="carousel#setRun">Repeat</button>
             </div>
-            <div class="payout-toggles__group" role="group" aria-label="Alarme">
+            <div class="payout-toggles__group" role="group" aria-label="Alarm">
               <button type="button" class="payout-toggle is-active" data-toggle-group="alarm" data-alarm="false" data-action="carousel#setAlarm">No alarm</button>
               <button type="button" class="payout-toggle" data-toggle-group="alarm" data-alarm="true" data-action="carousel#setAlarm">Alarm</button>
             </div>
@@ -83,13 +72,12 @@
                   <%= gta_money(target.easy_first_no_alarm) %>
                 </p>
                 <p class="polaroid__mode" data-carousel-target="modeLabel">
-                  Easy · 1ª da semana · No alarm
+                  Easy · 1st weekly · No alarm
                 </p>
                 <p style="font-size: 0.72rem; color: var(--ink-faded); margin: 0.2rem 0 0;">
-                  Reset <%= @economy[:weekly_reset] %> · imagem depois se quiser
+                  Resets <%= @economy[:weekly_reset] %>
                 </p>
 
-                <%# Tabela completa Easy / Hard %>
                 <table class="payout-table">
                   <thead>
                     <tr>
@@ -107,7 +95,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">1ª semana</th>
+                      <th scope="row">1st weekly</th>
                       <td data-payout-cell="easy_first_no_alarm" class="is-highlight"><%= gta_money_short(target.easy_first_no_alarm) %></td>
                       <td data-payout-cell="easy_first_alarm"><%= gta_money_short(target.easy_first_alarm) %></td>
                       <td data-payout-cell="hard_first_no_alarm"><%= gta_money_short(target.hard_first_no_alarm) %></td>
@@ -126,11 +114,11 @@
             <% end %>
 
             <div class="carousel__controls">
-              <button type="button" class="carousel__btn" data-action="carousel#prev" aria-label="Alvo anterior">‹</button>
+              <button type="button" class="carousel__btn" data-action="carousel#prev" aria-label="Previous target">‹</button>
 
               <label class="carousel__jump">
-                <span class="visually-hidden">Ir para alvo</span>
-                <select data-action="change->carousel#goTo" aria-label="Escolher pintura">
+                <span class="visually-hidden">Jump to target</span>
+                <select data-action="change->carousel#goTo" aria-label="Choose painting">
                   <% @primary_targets.each_with_index do |target, index| %>
                     <option value="<%= index %>" data-carousel-index="<%= index %>" <%= "selected" if index.zero? %>>
                       <%= index + 1 %>. <%= target.name %>
@@ -143,19 +131,14 @@
                 1 / <%= @primary_targets.size %>
               </span>
 
-              <button type="button" class="carousel__btn" data-action="carousel#next" aria-label="Próximo alvo">›</button>
+              <button type="button" class="carousel__btn" data-action="carousel#next" aria-label="Next target">›</button>
             </div>
           </div>
         <% else %>
-          <p class="polaroid__caption">Sem dados — rode <code>bin/rails db:seed</code></p>
+          <p class="polaroid__caption">No data — run <code>bin/rails db:seed</code></p>
         <% end %>
       </article>
 
-      <%#
-        --- SECONDARY LOOT + BOLSA ---
-        Clique pra selecionar até 100% da bolsa; total embaixo.
-        Stimulus: bag_controller.js
-      %>
       <article
         class="paper-card"
         style="transform: rotate(<%= pin_tilt(2) %>); animation-delay: 0.18s;"
@@ -165,11 +148,11 @@
         <span class="paper-card__pin" aria-hidden="true"></span>
         <h3>Secondary Targets</h3>
         <p style="margin: 0 0 0.5rem;">
-          Pool no prédio ~<%= gta_money_short(2_300_000) %>–<%= gta_money_short(2_677_500) %>.
-          Monte a bolsa solo (máx. 100%).
+          Building pool ~<%= gta_money_short(2_300_000) %>–<%= gta_money_short(2_677_500) %>.
+          Fill a solo bag (max 100%).
         </p>
 
-        <ul class="loot-list loot-list--selectable" role="listbox" aria-label="Secondary targets da bolsa" aria-multiselectable="true">
+        <ul class="loot-list loot-list--selectable" role="listbox" aria-label="Secondary bag targets" aria-multiselectable="true">
           <% @secondary_targets.each do |loot| %>
             <li>
               <button
@@ -186,7 +169,7 @@
                 <span class="loot-list__meta">
                   <%= loot.location %>
                   <% if loot.bag_weight.to_i > 0 %>
-                    · bolsa ~<%= loot.bag_weight %>%
+                    · bag ~<%= loot.bag_weight %>%
                   <% end %>
                 </span>
               </button>
@@ -200,11 +183,11 @@
           </div>
 
           <div class="bag-summary__row">
-            <span>Bolsa</span>
+            <span>Bag</span>
             <strong data-bag-target="used">0% / 100%</strong>
           </div>
           <div class="bag-summary__row">
-            <span>Itens secondary</span>
+            <span>Secondary items</span>
             <strong data-bag-target="count">0</strong>
           </div>
           <div class="bag-summary__row">
@@ -212,11 +195,10 @@
             <strong data-bag-target="primaryTotal">GTA$0</strong>
           </div>
           <div class="bag-summary__row">
-            <span>Secondary (bolsa)</span>
+            <span>Secondary (bag)</span>
             <strong data-bag-target="total">GTA$0</strong>
           </div>
 
-          <%# Bônus — valor muda com Easy ($50k) / Hard ($100k) do primary %>
           <div class="bag-bonuses">
             <button
               type="button"
@@ -250,88 +232,108 @@
           </div>
 
           <div class="bag-summary__row bag-summary__row--total">
-            <span>Total da run</span>
+            <span>Run total</span>
             <strong data-bag-target="grandTotal">GTA$0</strong>
           </div>
 
           <p class="bag-summary__hint" data-bag-target="hint">
-            Clique nos itens pra somar com o Primary Target.
+            Click items to add them to the Primary Target total.
           </p>
 
           <button type="button" class="bag-summary__clear" data-action="bag#clear">
-            Limpar bolsa
+            Clear bag
           </button>
         </div>
       </article>
     </div>
 
-    <%# ===================== COLUNA DIREITA ===================== %>
     <div class="stack">
-      <%# --- POST-IT DE ECONOMIA --- %>
       <aside class="postit" style="animation-delay: 0.1s;">
         <h3>Money Notes</h3>
         <ul style="margin: 0; padding-left: 1.1rem;">
           <li>
-            Main Targets no board:
+            Main Targets on board:
             <strong><%= @economy[:primary_count] %></strong>
             (Easy/Hard × alarm)
           </li>
           <li>
-            Top Easy 1ª / no alarm:
+            Top Easy 1st / no alarm:
             <strong><%= gta_money(@economy[:main_first]) %></strong>
             (<%= @economy[:main_target_name] %>)
           </li>
           <li>
-            Solo 1ª run:
+            Solo 1st run:
             <strong><%= gta_money_short(@economy[:solo_first_min]) %>–<%= gta_money_short(@economy[:solo_first_max]) %></strong>
           </li>
           <li>
-            Crew 4 (máx. reportado):
+            Crew of 4 (reported max):
             <strong><%= gta_money(@economy[:crew_max_reported]) %></strong>
           </li>
           <li>
-            Setup fee: grátis 1ª /
+            Setup fee: free 1st /
             <strong><%= gta_money(@economy[:setup_fee_repeat]) %></strong> repeat
           </li>
           <li>
-            Buyer’s Request: <%= gta_money_short(@economy[:buyer_request_normal]) %> Normal /
+            Buyer’s Request: <%= gta_money_short(@economy[:buyer_request_normal]) %> Easy /
             <%= gta_money_short(@economy[:buyer_request_hard]) %> Hard
           </li>
           <li>
             Elite Challenge: <%= gta_money_short(@economy[:elite_challenge_normal]) %> /
             <%= gta_money_short(@economy[:elite_challenge_hard]) %> Hard
           </li>
-          <li>Reset semanal: <strong><%= @economy[:weekly_reset] %></strong></li>
+          <li>Weekly reset: <strong><%= @economy[:weekly_reset] %></strong></li>
         </ul>
         <p style="margin: 0.75rem 0 0; font-size: 0.78rem;">
-          Conselho da crew: faça <strong>uma run limpa por semana</strong>.
-          Repeat com fee de $100k quase não vale o tempo.
+          Crew tip: do <strong>one clean run per week</strong>.
+          Repeats with the $100k fee are rarely worth the time.
         </p>
       </aside>
 
-      <%# --- ENTRY POINTS --- %>
       <article class="paper-card" style="transform: rotate(<%= pin_tilt(3) %>); animation-delay: 0.2s;">
         <span class="paper-card__pin" aria-hidden="true"></span>
         <h3>Entry Points</h3>
-        <p style="margin-top: 0;">Fotografar no Scope Out. Infiltration Gear = porta da finale.</p>
+        <p style="margin-top: 0;">Scope these out. Infiltration Gear picks your finale door.</p>
         <div class="entry-grid">
           <% @entry_points.each do |entry| %>
             <div class="entry-chip">
-              <strong><%= entry.name %></strong>
-              <%= entry.gear_option %><br>
-              <span style="opacity: 0.8;"><%= entry.description %></span>
-              <% if entry.guide? %>
-                <%= link_to "▶ Guide (YouTube)", entry.guide_url,
-                      class: "entry-chip__guide",
-                      target: "_blank",
-                      rel: "noopener noreferrer" %>
-              <% end %>
+              <div class="entry-chip__media">
+                <% if entry.image_available? %>
+                  <%= image_tag entry.image_path,
+                        alt: entry.name,
+                        class: "entry-chip__image" %>
+                <% else %>
+                  <div class="entry-chip__placeholder" aria-hidden="true">?</div>
+                <% end %>
+              </div>
+
+              <div class="entry-chip__body">
+                <strong><%= entry.name %></strong>
+                <%= entry.gear_option %><br>
+                <span style="opacity: 0.8;"><%= entry.description %></span>
+                <% if entry.guide? %>
+                  <%= link_to "▶ Guide (YouTube)", entry.guide_url,
+                        class: "entry-chip__guide",
+                        target: "_blank",
+                        rel: "noopener noreferrer" %>
+                <% end %>
+              </div>
             </div>
           <% end %>
         </div>
+
+        <div class="laser-guide">
+          <div class="laser-guide__label">Laser Room</div>
+          <p class="laser-guide__text">
+            Critical finale step — lasers / vault path.
+          </p>
+          <%= link_to "▶ Guide · Laser Room (YouTube)",
+                "https://www.youtube.com/watch?v=kVkI9koRvgo",
+                class: "entry-chip__guide laser-guide__link",
+                target: "_blank",
+                rel: "noopener noreferrer" %>
+        </div>
       </article>
 
-      <%# --- PREPS OBRIGATÓRIAS --- %>
       <article class="paper-card" style="transform: rotate(<%= pin_tilt(4) %>); animation-delay: 0.26s;">
         <span class="paper-card__pin" aria-hidden="true"></span>
         <h3>Mandatory Preps</h3>
@@ -350,11 +352,10 @@
         </ul>
       </article>
 
-      <%# --- PREPS OPCIONAIS --- %>
       <article class="paper-card" style="transform: rotate(<%= pin_tilt(5) %>); animation-delay: 0.32s;">
         <span class="paper-card__pin" aria-hidden="true"></span>
         <h3>Optional Preps</h3>
-        <p style="margin-top: 0;">Desbloqueadas no Scope Out (foto / CCTV).</p>
+        <p style="margin-top: 0;">Unlocked during Scope Out (photo / CCTV).</p>
         <ul class="prep-list">
           <% @optional_preps.each do |prep| %>
             <li>
@@ -374,7 +375,23 @@
   </div>
 
   <footer class="board-footer">
-    Projeto de estudo Rails · guia pra amigos da crew ·
-    valores da comunidade (jul/2026) — confirme in-game após patches
+    <p class="board-footer__line">
+      Non-profit fan project — made by players, for players, to share heist info.
+      Not affiliated with Rockstar Games or Take-Two Interactive.
+    </p>
+    <p class="board-footer__line">
+      Images are in-game screenshots used only to help players recognize locations and targets.
+      Community payout figures (Jul 2026) — always confirm in-game after patches.
+    </p>
+    <p class="board-footer__line">
+      If Rockstar has any concern about this site, please contact me and I will gladly take it down
+      to respect their guidelines.
+    </p>
+    <p class="board-footer__line">
+      <%= link_to "github.com/suethttps", "https://github.com/suethttps",
+            class: "board-footer__link",
+            target: "_blank",
+            rel: "noopener noreferrer" %>
+    </p>
   </footer>
 </section>

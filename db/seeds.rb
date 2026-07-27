@@ -126,7 +126,7 @@ primaries.each_with_index do |row, index|
     hard_first_alarm: hfa,
     hard_repeat_alarm: hra,
     bag_weight: 0,
-    notes: "Main Target — valores Easy/Hard × 1ª semana × alarme (tabela da comunidade).",
+    notes: "Main Target — Easy/Hard × 1st weekly × alarm (community payout table).",
     position: index + 1
   )
 end
@@ -138,38 +138,38 @@ puts ">> Criando secondary targets..."
 
 secondaries = [
   # ---------------------------------------------------------------------------
-  # Vault secondaries — CORRIGIDO À MÃO (não usar os GTA$850k/825k/775k/750k
-  # que alguns guias listam; valores reais in-game / da crew ficam abaixo).
+  # Vault secondaries — HAND-CORRECTED (do not use the GTA$850k/825k/775k/750k
+  # figures some guides list; crew/in-game values are below).
   # ---------------------------------------------------------------------------
-  ["With Friends Like These", "Vault", 85_000, 50, "Pintura de cofre — alta prioridade"],
-  ["Het Gouden Hondje", "Vault", 82_500, 50, "Pintura de cofre — alta prioridade"],
-  ["Swingset Study No. LXiX", "Vault", 77_500, 50, "Pintura de cofre"],
-  ["The Hunter Becomes The Hunted", "Vault", 75_000, 50, "Pintura de cofre"],
-  ["Don't Forgo These Blueprints", "2º andar", 150_000, 40, "Galeria superior"],
-  ["The Great Circle Back", "2º andar", 145_000, 40, "Galeria 2º andar"],
-  ["Cooked", "2º andar", 120_000, 40, "Kircher — 2º andar"],
-  ["Venus d'Algernon (Ivory)", "2º andar", 120_000, 35, "Display / escultura"],
-  ["Sod Off", "2º andar", 115_000, 40, "Pintura 2º andar"],
-  ["The Chief", "1º andar", 110_000, 40, "Galeria 1º andar"],
-  ["Orange Crush", "1º andar", 107_500, 40, "Galeria 1º andar"],
-  ["Yellow Topaz Gemstone", "2º andar", 107_500, 20, "Joia — leve na bolsa"],
-  ["La Duchesse", "1º andar", 105_000, 40, "Galeria 1º andar"],
-  ["Do You See Me", "1º andar", 105_000, 40, "Galeria 1º andar"],
-  ["Coquard Carcanet (Tanzanite)", "2º andar", 97_500, 15, "Joia"],
-  ["Perlino Andalusian", "2º andar", 95_000, 30, "Peça de galeria"],
-  ["Fertility Statue (Bronze)", "2º andar", 88_000, 30, "Estátua"],
-  ["Meteorite Fragment", "2º andar", 84_000, 20, "Display"],
-  ["Memento Non Mori (Emerald)", "Térreo", 77_500, 20, "Joia — térreo"],
-  ["Fertility Statue (Ivory)", "1º andar", 62_000, 30, "Estátua"],
-  ["Œuf de Coquard décoratif", "Térreo", 54_000, 15, "Ovo decorativo"],
-  ["Œuf de Coquard enchanté", "2º andar", 52_000, 15, "Ovo decorativo"],
-  ["Antique Bands", "1º andar", 35_000, 10, "Anéis"],
-  ["Art Deco Rings", "1º andar", 34_000, 10, "Anéis"],
-  ["Antique Rings", "1º andar", 34_000, 10, "Anéis"],
-  ["Coquard Rings", "1º andar", 31_000, 10, "Anéis"],
-  ["Pharaonic Bangles", "1º andar", 31_000, 10, "Braceletes"],
-  ["Byzantine Hoops", "Térreo", 29_000, 10, "Brincos"],
-  ["Coquard Bracelets", "2º andar", 29_000, 10, "Braceletes"]
+  ["With Friends Like These", "Vault", 85_000, 50, "Vault painting — high priority"],
+  ["Het Gouden Hondje", "Vault", 82_500, 50, "Vault painting — high priority"],
+  ["Swingset Study No. LXiX", "Vault", 77_500, 50, "Vault painting"],
+  ["The Hunter Becomes The Hunted", "Vault", 75_000, 50, "Vault painting"],
+  ["Don't Forgo These Blueprints", "2nd floor", 150_000, 40, "Upper gallery"],
+  ["The Great Circle Back", "2nd floor", 145_000, 40, "2nd floor gallery"],
+  ["Cooked", "2nd floor", 120_000, 40, "Kircher — 2nd floor"],
+  ["Venus d'Algernon (Ivory)", "2nd floor", 120_000, 35, "Display / sculpture"],
+  ["Sod Off", "2nd floor", 115_000, 40, "2nd floor painting"],
+  ["The Chief", "1st floor", 110_000, 40, "1st floor gallery"],
+  ["Orange Crush", "1st floor", 107_500, 40, "1st floor gallery"],
+  ["Yellow Topaz Gemstone", "2nd floor", 107_500, 20, "Jewel — light in bag"],
+  ["La Duchesse", "1st floor", 105_000, 40, "1st floor gallery"],
+  ["Do You See Me", "1st floor", 105_000, 40, "1st floor gallery"],
+  ["Coquard Carcanet (Tanzanite)", "2nd floor", 97_500, 15, "Jewel"],
+  ["Perlino Andalusian", "2nd floor", 95_000, 30, "Gallery piece"],
+  ["Fertility Statue (Bronze)", "2nd floor", 88_000, 30, "Statue"],
+  ["Meteorite Fragment", "2nd floor", 84_000, 20, "Display"],
+  ["Memento Non Mori (Emerald)", "Ground floor", 77_500, 20, "Jewel — ground floor"],
+  ["Fertility Statue (Ivory)", "1st floor", 62_000, 30, "Statue"],
+  ["Œuf de Coquard décoratif", "Ground floor", 54_000, 15, "Decorative egg"],
+  ["Œuf de Coquard enchanté", "2nd floor", 52_000, 15, "Decorative egg"],
+  ["Antique Bands", "1st floor", 35_000, 10, "Rings"],
+  ["Art Deco Rings", "1st floor", 34_000, 10, "Rings"],
+  ["Antique Rings", "1st floor", 34_000, 10, "Rings"],
+  ["Coquard Rings", "1st floor", 31_000, 10, "Rings"],
+  ["Pharaonic Bangles", "1st floor", 31_000, 10, "Bracelets"],
+  ["Byzantine Hoops", "Ground floor", 29_000, 10, "Earrings"],
+  ["Coquard Bracelets", "2nd floor", 29_000, 10, "Bracelets"]
 ]
 
 secondaries.each_with_index do |(name, location, payout, weight, notes), index|
@@ -191,41 +191,41 @@ end
 puts ">> Criando prep missions..."
 
 mandatory_preps = [
-  ["Scope Out", "scope", "Fotografar entradas, CCTV e alvos. Base de tudo no board."],
-  ["Access Code", "equipment", "Código de acesso necessário pra infiltração."],
-  ["Hacking Device", "equipment", "Dispositivo pra hackear sistemas do museu."],
-  ["Infiltration Gear", "infiltration", "Escolhe o ponto de entrada (1 gear = 1 entry)."],
-  ["Unmarked Weapons", "weapons", "Armas sem marcação pra equipe."],
-  ["Getaway Vehicle", "getaway", "Veículo de fuga (pode pagar bônus pequeno)."]
+  ["Scope Out", "scope", "Photograph entries, CCTV, and targets. Foundation of the board."],
+  ["Access Code", "equipment", "Access code required for infiltration."],
+  ["Hacking Device", "equipment", "Device used to hack museum systems."],
+  ["Infiltration Gear", "infiltration", "Chooses your entry point (1 gear = 1 entry)."],
+  ["Unmarked Weapons", "weapons", "Unmarked weapons for the crew."],
+  ["Getaway Vehicle", "getaway", "Escape vehicle (may pay a small bonus)."]
 ]
 
 mandatory_preps.each_with_index do |(name, category, description), index|
   PrepMission.create!(
     name: name,
     category: category,
-    mandatory: true, 
+    mandatory: true,
     description: description,
-    unlock_hint: "Aparece no Planning Board após o Scope Out / progressão da história.",
+    unlock_hint: "Appears on the Planning Board after Scope Out / story progress.",
     position: index + 1
   )
 end
 
 optional_preps = [
   ["EMP Charges", "optional",
-   "Destrói armas/equipamentos dos reforços.",
-   "Fotografe a caixa elétrica no telhado durante o Scope Out."],
+   "Destroys reinforcement weapons and gear.",
+   "Photograph the electrical box on the roof during Scope Out."],
   ["Guard Routes", "optional",
-   "Intel das rotas dos guardas.",
-   "Fotografe a torre de rádio no telhado."],
+   "Intel on guard patrol routes.",
+   "Photograph the radio tower on the roof."],
   ["Guard Shipments", "optional",
-   "Interrompe remessas/reforços.",
-   "Veja as caixas via CCTV da Loading Bay."],
+   "Interrupts shipments / reinforcements.",
+   "View the crates via Loading Bay CCTV."],
   ["Power Drills", "optional",
-   "Furadeiras pra lockboxes do cofre.",
-   "Veja as lockboxes do vault via CCTV."],
+   "Drills for vault lockboxes.",
+   "View the vault lockboxes via CCTV."],
   ["Glass Cutter", "optional",
-   "Corta vitrines reforçadas (skull / displays altos).",
-   "Fotografe uma vitrine alta/reforçada no interior."]
+   "Cuts reinforced display cases (skull / tall cases).",
+   "Photograph a tall reinforced case inside."]
 ]
 
 optional_preps.each_with_index do |(name, category, description, hint), index|
@@ -247,14 +247,18 @@ puts ">> Criando entry points..."
 # [name, gear, description, guide_url]
 [
   ["Staff Entrance", "Staff Disguise / Gear A",
-   "Entrada de funcionários no térreo, pelo Bell Building.", nil],
+   "Staff door on the ground floor via the Bell Building.",
+   "https://www.youtube.com/watch?v=nDw_zremjsk"],
   ["Skylight", "Rooftop Gear / Gear B",
-   "Claraboia no telhado — acesso pelo Bell Building.",
-   "https://www.youtube.com/watch?v=P87H4d86Oao"], # guide da crew / Skylight
+   "Rooftop skylight — access via the Bell Building.",
+   "https://www.youtube.com/watch?v=P87H4d86Oao"],
   ["Loading Bay", "Dock Worker Gear / Gear C",
-   "Doca de carga; também aparece nas câmeras de segurança.", nil],
+   "Loading dock; also visible on security cameras.",
+   "https://www.youtube.com/watch?v=nvvqRv86C_w"],
   ["Sewer", "Sewer Gear / Gear D",
-   "Bueiro no centro do labirinto de sebes (precisa da chave do manhole).", nil]
+   "Manhole in the hedge maze center (needs the manhole key).",
+   "https://www.youtube.com/watch?v=1XANjiI0sTg"]
+
 ].each_with_index do |(name, gear, description, guide_url), index|
   EntryPoint.create!(
     name: name,

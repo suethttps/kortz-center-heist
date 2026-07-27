@@ -67,7 +67,7 @@ export default class extends Controller {
       item.setAttribute("aria-pressed", "false")
     } else {
       if (this.usedWeight() + weight > this.capacityValue) {
-        this.flashHint("Não cabe na bolsa (passaria de 100%).")
+        this.flashHint("Won't fit in the bag (would go over 100%).")
         return
       }
       item.classList.add("is-selected")
@@ -170,11 +170,11 @@ export default class extends Controller {
 
     if (this.hasHintTarget && !this.hintTarget.classList.contains("is-warn")) {
       if (used === 0 && !this.buyerOn && !this.eliteOn) {
-        this.hintTarget.textContent = "Some secondaries e marque os bônus se completar."
+        this.hintTarget.textContent = "Pick secondaries and toggle bonuses if you complete them."
       } else if (used >= this.capacityValue) {
-        this.hintTarget.textContent = "Bolsa cheia · bônus seguem Easy/Hard do primary."
+        this.hintTarget.textContent = "Bag full · bonuses follow Easy/Hard on the primary."
       } else {
-        this.hintTarget.textContent = `Cabem ~${this.capacityValue - used}% · bônus = ${this.formatMoney(bonus)} (${diffLabel})`
+        this.hintTarget.textContent = `~${this.capacityValue - used}% left · bonus = ${this.formatMoney(bonus)} (${diffLabel})`
       }
     }
 

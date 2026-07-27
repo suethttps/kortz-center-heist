@@ -57,7 +57,7 @@ class PlanningBoardController < ApplicationController
       crew_max_reported: 7_143_000,
 
       # Reset semanal = toda quinta (mesmo ciclo dos outros heists)
-      weekly_reset: "Quinta-feira",
+      weekly_reset: "Thursday",
 
       # Main target de referência (maior Easy first / no alarm)
       main_target_name: main&.name,

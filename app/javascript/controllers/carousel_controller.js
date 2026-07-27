@@ -158,7 +158,7 @@ export default class extends Controller {
 
   modeText() {
     const diff = this.difficulty === "hard" ? "Hard" : "Easy"
-    const run = this.run === "first" ? "1ª da semana" : "Repeat"
+    const run = this.run === "first" ? "1st weekly" : "Repeat"
     const alarm = this.alarm ? "Alarm" : "No alarm"
     return `${diff} · ${run} · ${alarm}`
   }

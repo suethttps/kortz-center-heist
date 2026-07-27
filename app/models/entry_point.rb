@@ -29,4 +29,28 @@ class EntryPoint < ApplicationRecord
   def guide?
     guide_url.present?
   end
+
+  # ---------------------------------------------------------------------------
+  # Imagem ao lado da entrada
+  # Pasta: app/assets/images/entry_points/
+  # Arquivos esperados:
+  #   staff-entrance.png | skylight.png | loading-bay.png | sewer.png
+  # ---------------------------------------------------------------------------
+  def image_slug
+    name.to_s
+        .unicode_normalize(:nfd)
+        .gsub(/\p{M}/, "")
+        .downcase
+        .gsub(/[^a-z0-9]+/, "-")
+        .gsub(/\A-|-\z/, "")
+  end
+
+  def image_path
+    "entry_points/#{image_slug}.png"
+  end
+
+  def image_available?
+    Rails.root.join("app/assets/images", image_path).exist?
+  end
 end
+
