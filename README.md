@@ -4,6 +4,8 @@
 
 App em **Ruby on Rails 8** que recria o clima do **quadro de planejamento** do Art Studio: cork board, polaroids, post-its e pins — com os preços do main target (primeira run da semana vs buyer fatigue), secondary targets, entry points e prep missions.
 
+![Planning Board — primary target, post-its e entry points](docs/screenshots/planning-board.png)
+
 ---
 
 ## Por que esse projeto existe?
