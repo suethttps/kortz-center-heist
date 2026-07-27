@@ -214,6 +214,15 @@ body.board-page {
   overflow: hidden;
 }
 
+/* Pintura real no lugar do placeholder "ART" */
+.polaroid__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+}
+
 .polaroid__frame::after {
   content: "";
   position: absolute;
@@ -225,6 +234,8 @@ body.board-page {
     transparent 60%
   );
   animation: shine 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .polaroid__glyph {
@@ -241,12 +252,200 @@ body.board-page {
   color: var(--ink);
 }
 
+/* -----------------------------------------------------------------------------
+ * Carousel de Primary Targets
+ * --------------------------------------------------------------------------- */
+.carousel {
+  position: relative;
+}
+
+.carousel__slide {
+  animation: slideFade 0.28s ease-out;
+}
+
+.carousel__slide[hidden] {
+  display: none !important;
+}
+
+.carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(74, 63, 53, 0.35);
+}
+
+.carousel__btn {
+  appearance: none;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.carousel__btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.carousel__btn:active {
+  transform: scale(0.94);
+}
+
+.carousel__dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.carousel__dot {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(26, 20, 16, 0.28);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.carousel__dot.is-active {
+  background: var(--pin-red);
+  transform: scale(1.25);
+}
+
+.carousel__counter {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .polaroid__price {
   font-family: "IBM Plex Mono", monospace;
   font-weight: 600;
   color: var(--money-green);
   font-size: 1.05rem;
   margin-top: 0.2rem;
+}
+
+.polaroid__mode {
+  margin: 0.2rem 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+}
+
+/* Toggles Easy / Hard / Alarm */
+.payout-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.85rem;
+}
+
+.payout-toggles__group {
+  display: inline-flex;
+  border: 1px solid rgba(74, 63, 53, 0.4);
+  overflow: hidden;
+}
+
+.payout-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--ink-faded);
+  font-family: "Special Elite", monospace;
+  font-size: 0.72rem;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.payout-toggle.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Tabela de payouts */
+.payout-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+}
+
+.payout-table th,
+.payout-table td {
+  border: 1px solid rgba(74, 63, 53, 0.25);
+  padding: 0.3rem 0.25rem;
+  text-align: center;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.payout-table thead th {
+  background: rgba(26, 20, 16, 0.08);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.payout-table tbody th {
+  text-align: left;
+  font-family: "Special Elite", monospace;
+  font-weight: 400;
+  white-space: nowrap;
+  padding-left: 0.35rem;
+}
+
+.payout-table td.is-highlight {
+  background: rgba(30, 107, 58, 0.18);
+  color: var(--money-green);
+  font-weight: 600;
+}
+
+.carousel__jump select {
+  max-width: 11rem;
+  font-family: "Special Elite", monospace;
+  font-size: 0.72rem;
+  background: var(--paper);
+  border: 1px solid rgba(74, 63, 53, 0.45);
+  color: var(--ink);
+  padding: 0.25rem 0.35rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
 .price-row {
@@ -286,10 +485,7 @@ body.board-page {
 }
 
 .loot-list li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.35rem 0.75rem;
-  padding: 0.4rem 0;
+  padding: 0;
   border-bottom: 1px solid rgba(74, 63, 53, 0.2);
 }
 
@@ -309,6 +505,190 @@ body.board-page {
   font-size: 0.78rem;
   color: var(--money-green);
   white-space: nowrap;
+}
+
+/* Item clicável da bolsa */
+.loot-item {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.75rem;
+  padding: 0.45rem 0.35rem;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: background 0.15s ease;
+}
+
+.loot-item:hover:not(.is-disabled) {
+  background: rgba(26, 20, 16, 0.06);
+}
+
+.loot-item.is-selected {
+  background: rgba(30, 107, 58, 0.14);
+  box-shadow: inset 3px 0 0 var(--money-green);
+}
+
+.loot-item.is-disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+/* Resumo da bolsa */
+.bag-summary {
+  margin-top: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed rgba(74, 63, 53, 0.35);
+}
+
+.bag-summary__bar {
+  height: 8px;
+  background: rgba(26, 20, 16, 0.12);
+  border: 1px solid rgba(74, 63, 53, 0.25);
+  margin-bottom: 0.65rem;
+  overflow: hidden;
+}
+
+.bag-summary__fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #2d7a45, var(--money-green));
+  transition: width 0.2s ease;
+}
+
+.bag-summary__fill.is-full {
+  background: linear-gradient(90deg, #8a4b2a, var(--pin-red));
+}
+
+.bag-summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--ink-faded);
+  padding: 0.15rem 0;
+}
+
+.bag-summary__row strong {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.bag-summary__row em {
+  font-style: normal;
+  color: var(--ink);
+}
+
+.bag-bonuses {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.55rem 0 0.35rem;
+}
+
+.bag-bonus {
+  appearance: none;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.45rem 0.5rem;
+  border: 1px solid rgba(74, 63, 53, 0.35);
+  background: rgba(26, 20, 16, 0.03);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.bag-bonus:hover {
+  background: rgba(26, 20, 16, 0.07);
+}
+
+.bag-bonus.is-on {
+  background: rgba(30, 107, 58, 0.12);
+  border-color: rgba(30, 107, 58, 0.45);
+}
+
+.bag-bonus__check {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+.bag-bonus.is-on .bag-bonus__check {
+  background: var(--money-green);
+  border-color: var(--money-green);
+  box-shadow: inset 0 0 0 2px var(--paper);
+}
+
+.bag-bonus__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.78rem;
+  color: var(--ink);
+}
+
+.bag-bonus__text small {
+  font-size: 0.65rem;
+  color: var(--ink-faded);
+}
+
+.bag-bonus strong {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--money-green);
+  white-space: nowrap;
+}
+
+.bag-summary__row--total {
+  margin-top: 0.25rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(74, 63, 53, 0.2);
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.bag-summary__row--total strong {
+  color: var(--money-green);
+  font-size: 1.05rem;
+}
+
+.bag-summary__hint {
+  margin: 0.55rem 0 0.4rem;
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+}
+
+.bag-summary__hint.is-warn {
+  color: var(--pin-red);
+}
+
+.bag-summary__clear {
+  appearance: none;
+  border: 1px solid rgba(74, 63, 53, 0.45);
+  background: transparent;
+  color: var(--ink-faded);
+  font-family: "Special Elite", monospace;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+}
+
+.bag-summary__clear:hover {
+  color: var(--ink);
+  border-color: var(--ink);
 }
 
 /* Post-it de economia */
@@ -391,6 +771,22 @@ body.board-page {
   font-weight: 400;
   color: var(--ink);
   margin-bottom: 0.15rem;
+}
+
+.entry-chip__guide {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-family: "Bebas Neue", Impact, sans-serif;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+  color: var(--pin-red);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(192, 57, 43, 0.45);
+}
+
+.entry-chip__guide:hover {
+  color: #8e1e14;
+  border-bottom-color: #8e1e14;
 }
 
 /* Linha vermelha decorativa (barbante do board) */

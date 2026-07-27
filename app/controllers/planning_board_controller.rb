@@ -59,10 +59,11 @@ class PlanningBoardController < ApplicationController
       # Reset semanal = toda quinta (mesmo ciclo dos outros heists)
       weekly_reset: "Quinta-feira",
 
-      # Main target atual (se o seed rodou)
+      # Main target de referência (maior Easy first / no alarm)
       main_target_name: main&.name,
-      main_first: main&.first_weekly_payout,
-      main_repeat: main&.repeat_payout
+      main_first: main&.easy_first_no_alarm || main&.first_weekly_payout,
+      main_repeat: main&.easy_repeat || main&.repeat_payout,
+      primary_count: Target.primary.count
     }
   end
 end

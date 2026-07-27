@@ -24,4 +24,9 @@ class EntryPoint < ApplicationRecord
   def board_caption
     "#{name} → #{gear_option}"
   end
+
+  # Tem vídeo/guia externo (ex.: YouTube da Skylight)
+  def guide?
+    guide_url.present?
+  end
 end

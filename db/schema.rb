@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_26_221500) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_27_013736) do
   create_table "entry_points", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
     t.string "gear_option"
+    t.string "guide_url"
     t.string "name"
     t.integer "position"
     t.datetime "updated_at", null: false
@@ -37,7 +38,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_26_221500) do
   create_table "targets", force: :cascade do |t|
     t.integer "bag_weight"
     t.datetime "created_at", null: false
+    t.integer "easy_first_alarm"
+    t.integer "easy_first_no_alarm"
+    t.integer "easy_repeat"
+    t.integer "easy_repeat_alarm"
     t.integer "first_weekly_payout"
+    t.integer "hard_first_alarm"
+    t.integer "hard_first_no_alarm"
+    t.integer "hard_repeat"
+    t.integer "hard_repeat_alarm"
     t.string "kind"
     t.string "location"
     t.string "name"
