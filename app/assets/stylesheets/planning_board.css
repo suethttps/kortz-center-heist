@@ -831,6 +831,15 @@ body.board-page {
   background: rgba(192, 57, 43, 0.06);
 }
 
+.laser-guide + .laser-guide {
+  border-color: rgba(74, 63, 53, 0.4);
+  background: rgba(26, 20, 16, 0.05);
+}
+
+.laser-guide + .laser-guide .laser-guide__label {
+  color: var(--ink);
+}
+
 .laser-guide__label {
   font-family: "Bebas Neue", Impact, sans-serif;
   letter-spacing: 0.06em;

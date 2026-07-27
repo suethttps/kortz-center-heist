@@ -266,10 +266,6 @@
             <strong><%= gta_money_short(@economy[:solo_first_min]) %>–<%= gta_money_short(@economy[:solo_first_max]) %></strong>
           </li>
           <li>
-            Crew of 4 (reported max):
-            <strong><%= gta_money(@economy[:crew_max_reported]) %></strong>
-          </li>
-          <li>
             Setup fee: free 1st /
             <strong><%= gta_money(@economy[:setup_fee_repeat]) %></strong> repeat
           </li>
@@ -283,10 +279,6 @@
           </li>
           <li>Weekly reset: <strong><%= @economy[:weekly_reset] %></strong></li>
         </ul>
-        <p style="margin: 0.75rem 0 0; font-size: 0.78rem;">
-          Crew tip: do <strong>one clean run per week</strong>.
-          Repeats with the $100k fee are rarely worth the time.
-        </p>
       </aside>
 
       <article class="paper-card" style="transform: rotate(<%= pin_tilt(3) %>); animation-delay: 0.2s;">
@@ -328,6 +320,18 @@
           </p>
           <%= link_to "▶ Guide · Laser Room (YouTube)",
                 "https://www.youtube.com/watch?v=kVkI9koRvgo",
+                class: "entry-chip__guide laser-guide__link",
+                target: "_blank",
+                rel: "noopener noreferrer" %>
+        </div>
+
+        <div class="laser-guide">
+          <div class="laser-guide__label">100% Scope Out</div>
+          <p class="laser-guide__text">
+            Full recon — entry points, CCTV, optional prep unlocks, and targets.
+          </p>
+          <%= link_to "▶ Guide · 100% Scope Out (YouTube)",
+                "https://www.youtube.com/watch?v=sAd7OHSPPPA",
                 class: "entry-chip__guide laser-guide__link",
                 target: "_blank",
                 rel: "noopener noreferrer" %>
