@@ -1,6 +1,6 @@
 # Kortz Center Heist — Planning Board
 
-> **Nota do autor:** este é um projeto pessoal pra **aprender Ruby on Rails** e, ao mesmo tempo, montar um guia visual do **Kortz Center Heist** (GTA Online) pra mim e pros meus amigos. Não é afiliado à Rockstar Games. Valores de payout vêm da comunidade e podem mudar com patches.
+> **Nota do autor:** este é um projeto pessoal pra **aprender Ruby on Rails** e, ao mesmo tempo, montar um guia visual do **Kortz Center Heist** (GTA Online) pra mim e pros meus amigos. É **fan-made, feito por fãs para fãs** — não é oficial e não tem afiliação com a Rockstar Games. Veja o [Disclaimer](#disclaimer) abaixo.
 
 App em **Ruby on Rails 8** que recria o clima do **quadro de planejamento** do Art Studio: cork board, polaroids, post-its e pins — com os preços do main target (primeira run da semana vs buyer fatigue), secondary targets, entry points e prep missions.
 
@@ -26,7 +26,7 @@ App em **Ruby on Rails 8** que recria o clima do **quadro de planejamento** do A
 | Buyer’s Request / Elite | $50k Normal · $100k Hard |
 | Reset semanal | **Quinta-feira** |
 
-Fontes consultadas ao montar os seeds: Beebom, GTA Boom, GameRant, Crime Net Gazette e discussões da comunidade (incl. Reddit). **Sempre confirme in-game** depois de um patch.
+Fonte principal: [GTA Wiki — Scope Out Kortz Center](https://gta.wiki/w/Scope_Out_Kortz_Center). Payouts também foram cruzados com Beebom, GTA Boom, GameRant, Crime Net Gazette e discussões da comunidade (incl. Reddit). **Sempre confirme in-game** depois de um patch.
 
 ---
 
@@ -101,7 +101,16 @@ O código está **cheio de comentários** de propósito — é material de estud
 
 ## Disclaimer
 
-Grand Theft Auto, GTA Online e marcas relacionadas são propriedade da Rockstar Games / Take-Two. Este repositório é **fan-made**, educacional e pra uso informal entre amigos.
+Grand Theft Auto, GTA Online e marcas relacionadas são propriedade da **Rockstar Games** / **Take-Two Interactive**.
+
+Este repositório é um projeto **fan-made, feito por fãs para fãs**, sem fins lucrativos, educacional e pra uso informal entre amigos. **Não é oficial** — não possui qualquer afiliação, endosso ou aprovação da Rockstar ou da Take-Two.
+
+**Fontes**
+
+- **Informações do heist** (targets, payouts, preps, entry points, etc.): [GTA Wiki — Scope Out Kortz Center](https://gta.wiki/w/Scope_Out_Kortz_Center)
+- **Imagens dos primary targets**: [GTA Wiki — Main Targets](https://gta.wiki/w/Scope_Out_Kortz_Center#Main_Targets)
+
+Se a Rockstar tiver qualquer preocupação com este projeto, entre em contato pelo [GitHub](https://github.com/suethttps) e eu retiro o site com prazer, respeitando as diretrizes deles.
 
 ---
 
